@@ -1,0 +1,14 @@
+.privacy-content {
+  max-width: 720px;
+  line-height: 1.7;
+}
+
+.privacy-content h3 {
+  margin: 24px 0 8px;
+  font-size: 18px;
+}
+
+.privacy-content p {
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
