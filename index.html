@@ -15,5 +15,15 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Восстанавливаем путь из sessionStorage после редиректа с 404.html
+      (function() {
+        var redirect = sessionStorage.getItem('redirect');
+        if (redirect) {
+          sessionStorage.removeItem('redirect');
+          history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
   </body>
 </html>
