@@ -15,7 +15,6 @@ export default function Header() {
     <header className="header">
       <div className="header-inner">
 
-        {}
         <Link to="/" className="logo">
           <img src="/logo.svg" alt="Константинополь Мед" className="logo-img" />
           <div>

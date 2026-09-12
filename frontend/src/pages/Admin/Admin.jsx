@@ -38,10 +38,9 @@ export default function Admin() {
   });
 
   useEffect(() => {
-    
     api("/auth/me").then((u) => {
       setUserRole(u.role);
-      
+
       if (u.role === "tech_admin") {
         loadUsers();
         loadAuthLogs();

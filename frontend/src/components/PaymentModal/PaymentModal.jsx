@@ -84,8 +84,6 @@ export default function PaymentModal({ service, doctor, slotDate, onClose, onSuc
 
           {error && <p className="payment-error">{error}</p>}
 
-          <p className="payment-note">Демо-режим: оплата имитируется, деньги не списываются</p>
-
           <button type="submit" className="btn btn-primary" disabled={processing}>
             {processing ? "Обработка..." : `Оплатить ${service?.price?.toLocaleString()} ₽`}
           </button>
