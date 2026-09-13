@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-primary: #0d6e8a;
+  --color-primary-dark: #095a72;
+  --color-primary-light: #e8f4f8;
+  --color-accent: #2ecc71;
+  --color-text: #1a2b3c;
+  --color-text-muted: #5a6b7c;
+  --color-bg: #f7fafb;
+  --color-white: #ffffff;
+  --color-border: #dde5ea;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --radius: 12px;
+  --max-width: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-outline:hover {
+  background: var(--color-primary-light);
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--color-text);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filters input,
+.filters select {
+  padding: 10px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 15px;
+  min-width: 200px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.slot-btn {
+  padding: 12px 20px;
+  border: 1px solid var(--color-primary);
+  border-radius: 8px;
+  background: white;
+  color: var(--color-primary);
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.slot-btn:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: var(--color-white);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+}
+
+.add-form input,
+.add-form textarea,
+.add-form select {
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.page-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.status-scheduled { color: #0d6e8a; }
+.status-completed { color: #27ae60; }
+.status-canceled { color: #e74c3c; }
+
+.page-subtitle {
+  color: var(--color-text-muted);
+  margin: -16px 0 32px;
+}
+
+.subsection-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.empty-msg {
+  color: var(--color-text-muted);
+}
+
+.card-grid .doctor-card-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+  border: 2px solid var(--color-primary-light);
+}
+
+.faq-link-section {
+  text-align: center;
+  padding: 32px 0;
+  background: var(--color-white);
+  border-top: 1px solid var(--color-border);
+}
+
+.faq-link {
+  display: inline-block;
+  padding: 12px 24px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.faq-link:hover {
+  background: var(--color-primary);
+  color: white;
+}

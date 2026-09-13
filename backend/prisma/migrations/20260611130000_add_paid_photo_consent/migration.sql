@@ -1,0 +1,9 @@
+
+ALTER TABLE "Doctor" ADD COLUMN "photoUrl" TEXT;
+
+
+ALTER TABLE "Patient" ADD COLUMN "dataConsent" BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE "Patient" ADD COLUMN "dataConsentDate" TIMESTAMP(3);
+
+
+ALTER TABLE "Appointment" ADD COLUMN "paid" BOOLEAN NOT NULL DEFAULT false;

@@ -1,0 +1,27 @@
+.confirm {
+  max-width: 500px;
+  margin: 60px auto;
+  text-align: center;
+  padding: 40px;
+  background: var(--color-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.confirm h2 {
+  margin-bottom: 16px;
+}
+
+.confirm p {
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.confirm-success {
+  color: #27ae60;
+}
+
+.confirm-error {
+  color: #e74c3c;
+}
+  

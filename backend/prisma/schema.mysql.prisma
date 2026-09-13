@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql" 
+  url      = env("DATABASE_URL")
+}
+model User {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  password          String
+  role              Role     @default(patient)
+  emailVerified     Boolean  @default(false)
+  emailVerifyToken  String?  @unique
+  emailVerifyExpiry DateTime?
+  doctor            Doctor?
+  patient           Patient?
+  createdAt         DateTime @default(now())
+}
+
+model Doctor {
+  id             Int             @id @default(autoincrement())
+  userId         Int             @unique
+  user           User            @relation(fields: [userId], references: [id])
+  name           String
+  specialty      String
+  description    String?
+  photoUrl       String?
+  appointments   Appointment[]
+  schedule       Schedule[]
+  medicalRecords MedicalRecord[]
+  services       DoctorService[]
+}
+
+model Patient {
+  id                Int             @id @default(autoincrement())
+  userId            Int             @unique
+  user              User            @relation(fields: [userId], references: [id])
+
+  fullName          String
+  phone             String?
+  birthDate         DateTime?
+  gender            Gender?
+  address           String?
+  dataConsent       Boolean         @default(false)
+  dataConsentDate   DateTime?
+
+  telegramUserId    BigInt?
+  telegramChatId    BigInt?
+  telegramLinkToken String?         @unique
+
+  appointments      Appointment[]
+  medicalRecords    MedicalRecord[]
+}
+
+model Appointment {
+  id            Int               @id @default(autoincrement())
+  doctorId      Int
+  patientId     Int
+  serviceId     Int?
+  date          DateTime
+  status        AppointmentStatus @default(SCHEDULED)
+  paid          Boolean           @default(false)
+  reminderSent  Boolean           @default(false)
+
+  doctor        Doctor            @relation(fields: [doctorId], references: [id])
+  patient       Patient           @relation(fields: [patientId], references: [id])
+  service       Service?          @relation(fields: [serviceId], references: [id])
+  medicalRecord MedicalRecord?
+}
+
+model Schedule {
+  id        Int      @id @default(autoincrement())
+  doctorId  Int
+  day       DateTime
+  startTime DateTime
+  endTime   DateTime
+  interval  Int
+
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+}
+
+model Service {
+  id           Int           @id @default(autoincrement())
+  name         String
+  price        Int
+  description  String?
+  category     String?
+  appointments Appointment[]
+  doctors      DoctorService[]
+}
+
+model DoctorService {
+  id        Int      @id @default(autoincrement())
+  doctorId  Int
+  serviceId Int
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  service   Service  @relation(fields: [serviceId], references: [id])
+
+  @@unique([doctorId, serviceId])
+}
+
+model MedicalRecord {
+  id              Int                 @id @default(autoincrement())
+  appointmentId   Int                 @unique
+  patientId       Int
+  doctorId        Int
+  diagnosis       String?
+  recommendations String?
+  treatment       String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  appointment     Appointment         @relation(fields: [appointmentId], references: [id])
+  patient         Patient             @relation(fields: [patientId], references: [id])
+  doctor          Doctor              @relation(fields: [doctorId], references: [id])
+  attachments     MedicalAttachment[]
+}
+
+model MedicalAttachment {
+  id              Int           @id @default(autoincrement())
+  medicalRecordId Int
+  filename        String
+  originalName    String
+  mimeType        String
+  fileSize        Int
+  fileType        AttachmentType @default(OTHER)
+
+  medicalRecord   MedicalRecord @relation(fields: [medicalRecordId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  admin
+  doctor
+  patient
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  COMPLETED
+  CANCELED
+}
+
+enum AttachmentType {
+  IMAGE
+  DICOM
+  OTHER
+}

@@ -1,0 +1,74 @@
+services:
+  # Основная база данных (PostgreSQL)
+  postgres_primary:
+    image: postgres:15
+    container_name: konstantinopol_db_primary
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: konstantinopol
+      POSTGRES_INITDB_ARGS: "--data-checksums"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: >
+      postgres
+      -c wal_level=replica
+      -c max_wal_senders=10
+      -c max_replication_slots=10
+      -c hot_standby=on
+
+  # Резервная реплика (PostgreSQL)
+  postgres_replica:
+    image: postgres:15
+    container_name: konstantinopol_db_replica
+    restart: always
+    environment:
+      PGPASSWORD: password
+    ports:
+      - "5433:5432"
+    depends_on:
+      - postgres_primary
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql/data
+    entrypoint: >
+      bash -c "
+      if [ ! -s /var/lib/postgresql/data/PG_VERSION ]; then
+        echo 'Ожидание запуска основной БД...';
+        until pg_isready -h postgres_primary -p 5432 -U postgres; do sleep 1; done;
+        echo 'Создание снимка данных с основной БД...';
+        pg_basebackup -h postgres_primary -D /var/lib/postgresql/data -U postgres -v -P -X stream;
+        touch /var/lib/postgresql/data/standby.signal;
+      fi;
+      exec docker-entrypoint.sh postgres -c hot_standby=on
+      "
+
+  # Аварийная СУБД (MySQL)
+  mysql_fallback:
+    image: mysql:8.0
+    container_name: konstantinopol_db_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: konstantinopol
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # Веб-админка
+  adminer:
+    image: adminer:latest
+    container_name: konstantinopol_adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
+    external: true
+    name: backend_postgres_data
+  postgres_replica_data:
+  mysql_data:
